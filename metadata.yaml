@@ -1,0 +1,7 @@
+# Copyright 2021 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+name: kubeflow-roles
+display-name: Kubeflow Roles
+description: RBAC aggregation roles for Kubeflow user accounts
+summary: RBAC aggregation roles for Kubeflow user accounts
