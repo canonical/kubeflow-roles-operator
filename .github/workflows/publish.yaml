@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+      - track/**
+
+jobs:
+  charm:
+    name: Publish Charm
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: sudo snap install charmcraft --classic --channel=latest/candidate
+
+    - name: Publish Charm
+      env:
+        CHARMCRAFT_CREDENTIALS: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
+        CHARMCRAFT_DEVELOPER: "y"
+      run: |
+        set -eux
+
+        mkdir -p ~/snap/charmcraft/common/config/
+        echo "$CHARMCRAFT_CREDENTIALS" > ~/snap/charmcraft/common/config/charmcraft.credentials
+
+        REV=$(git rev-parse --abbrev-ref HEAD)
+        TRACK=$([[ "$REV" =~ ^(master|main)$ ]] && echo "latest" || echo "${REV#track/}")
+
+        charmcraft pack --destructive-mode
+        charmcraft upload ./*.charm --release=$TRACK/edge
