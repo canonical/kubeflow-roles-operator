@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - track/**
+  schedule:
+    - cron: '0 8 * * TUE'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: pip install tox
+    - run: tox -e lint
+
+  unit-test:
+    name: Unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install tox
+      - run: tox -e unit
+
+  integration-test:
+    name: Integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup operator environment
+        uses: charmed-kubernetes/actions-operator@main
+        with:
+            provider: microk8s
+            channel: 1.21/stable
+            charmcraft-channel: latest/candidate
+
+      - run: sg microk8s -c "KUBECONFIG=$HOME/.kube/config tox -e integration"
