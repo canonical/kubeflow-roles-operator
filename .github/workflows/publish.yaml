@@ -4,30 +4,24 @@ on:
   push:
     branches:
       - master
+      - main
+      - track/**
+  pull_request:
+    branches:
+      - master
+      - main
       - track/**
 
 jobs:
-  charm:
+  publish-charm:
     name: Publish Charm
     runs-on: ubuntu-latest
-
+    # Only publish to charmhub if we are pushing to a special branch or running PRs from something named `branch/*`
+    if: (github.event_name == 'push') ||  (startsWith( github.head_ref, 'branch/' ))
     steps:
-    - uses: actions/checkout@v2
-
-    - run: sudo snap install charmcraft --classic --channel=latest/candidate
-
-    - name: Publish Charm
-      env:
-        CHARMCRAFT_CREDENTIALS: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
-        CHARMCRAFT_DEVELOPER: "y"
-      run: |
-        set -eux
-
-        mkdir -p ~/snap/charmcraft/common/config/
-        echo "$CHARMCRAFT_CREDENTIALS" > ~/snap/charmcraft/common/config/charmcraft.credentials
-
-        REV=$(git rev-parse --abbrev-ref HEAD)
-        TRACK=$([[ "$REV" =~ ^(master|main)$ ]] && echo "latest" || echo "${REV#track/}")
-
-        charmcraft pack --destructive-mode
-        charmcraft upload ./*.charm --release=$TRACK/edge
+      - uses: actions/checkout@v2
+      - uses: canonical/charmhub-upload-action@0.2.0
+        with:
+          credentials: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
+          charm-path: ./
+          charmcraft-channel: latest/edge
