@@ -26,9 +26,17 @@ async def charm(ops_test):
 
     await ops_test.model.block_until(
         lambda: not ops_test.model.applications,
-        timeout=60,
+        timeout=600,
     )
     assert ops_test.model.applications == {}
+
+
+async def test_active(charm, ops_test):
+    """Ensures all applications are in ActiveStatus."""
+
+    for app in ops_test.model.applications.values():
+        for unit in app.units:
+            assert unit.workload_status == "active"
 
 
 async def test_clusterroles_created(charm, ops_test):

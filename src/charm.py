@@ -78,24 +78,9 @@ class Operator(CharmBase):
     def get_manifests(self):
         return [
             obj
-            for path in glob("src/manifests/*.yaml")
+            for path in self._get_manifest_files()
             for obj in codecs.load_all_yaml(Path(path).read_text(), context={})
         ]
-
-    def set_manifests(self, manifests):
-        client = Client()
-        errors = []
-
-        for manifest in manifests:
-            try:
-                client.create(manifest)
-            except ApiError as err:
-                if err.status.code == 409:
-                    client.patch(type(manifest), manifest.metadata.name, manifest)
-                else:
-                    errors.append(err)
-
-        return errors
 
     def remove_manifests(self, manifests):
         client = Client()
@@ -111,6 +96,26 @@ class Operator(CharmBase):
                     )
                 else:
                     raise
+
+    @staticmethod
+    def _get_manifest_files():
+        return glob("src/manifests/*.yaml")
+
+    @staticmethod
+    def set_manifests(manifests):
+        client = Client()
+        errors = []
+
+        for manifest in manifests:
+            try:
+                client.create(manifest)
+            except ApiError as err:
+                if err.status.code == 409:
+                    client.patch(type(manifest), manifest.metadata.name, manifest)
+                else:
+                    errors.append(err)
+
+        return errors
 
 
 if __name__ == "__main__":
