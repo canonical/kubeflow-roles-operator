@@ -13,7 +13,11 @@ async def charm(ops_test):
 
     built_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(built_charm, trust=True)
-    await ops_test.model.wait_for_idle(status="active")
+    await ops_test.model.wait_for_idle(
+        status="active",
+        raise_on_blocked=True,
+        timeout=60,
+    )
 
     yield
 
