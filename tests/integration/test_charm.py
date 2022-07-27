@@ -3,13 +3,11 @@
 
 from pathlib import Path
 
-import pytest
 import yaml
 
 
-@pytest.fixture(scope="module")
-async def charm(ops_test):
-    """Fixture for building, deploying, then removing the charm."""
+async def test_build_and_deploy(ops_test):
+    """Build, deploy and ensure application is in ActiveStatus."""
 
     built_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(built_charm, trust=True)
@@ -18,28 +16,13 @@ async def charm(ops_test):
         raise_on_blocked=True,
         timeout=60,
     )
-
-    yield
-
-    for app in ops_test.model.applications.values():
-        await app.remove()
-
-    await ops_test.model.block_until(
-        lambda: not ops_test.model.applications,
-        timeout=600,
+    assert (
+        ops_test.model.applications["kubeflow-roles"].units[0].workload_status
+        == "active"
     )
-    assert ops_test.model.applications == {}
 
 
-async def test_active(charm, ops_test):
-    """Ensures all applications are in ActiveStatus."""
-
-    for app in ops_test.model.applications.values():
-        for unit in app.units:
-            assert unit.workload_status == "active"
-
-
-async def test_clusterroles_created(charm, ops_test):
+async def test_clusterroles_created(ops_test):
     """Ensures ClusterRoles were successfully created."""
 
     names = [
