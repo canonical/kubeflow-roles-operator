@@ -10,17 +10,17 @@ Implemented specifically in this charm are:
 
 ### Kubeflow User Aggregation Roles
 
-Kubeflow defines three [aggregation `ClusterRoles`](https://github.com/canonical/kubeflow-roles-operator/blob/afe3e1ea0a6dcb4136a506d4d2b697f9d1589a27/src/manifests/kubeflow-roles.yaml#L4) for use when granting roles to user `ServiceAccounts`:
+As described [here](https://github.com/kubeflow/manifests/tree/3e08dc102059def5a0b0d04560c7d119959bf506/common/kubeflow-roles) upstream, Kubeflow uses aggregation `ClusterRoles` to provide access control to users.  These `ClusterRoles` are:
 
 * rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view
 * rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit
 * rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin
 
-These are bound to `ServiceAccounts` during the creation of profiles, and user workloads (for example, the `Pod` of a `Notebook`) use these `ServiceAccounts`.  By default, [this](https://github.com/canonical/kubeflow-roles-operator/blob/afe3e1ea0a6dcb4136a506d4d2b697f9d1589a27/src/manifests/kubeflow-roles.yaml#L74) is how users are granted access both to Kubernetes primitives such as creating `Pods` and `Services`.
+These `ClusterRoles` ([see here](https://github.com/canonical/kubeflow-roles-operator/blob/d96c15e4de8bb36e9ec039ae66c12af1084ecd2b/src/manifests/kubeflow-roles.yaml#L4) for their definition in this charm) aggregate the permissions of all existing `ClusterRoles` that match a selector (in this case, `ClusterRoles` that have one of the `rbac.authorization.kubeflow.org/aggregate-to-kubeflow-*: "true"` labels), allowing permissions to be added to the aggregation roles without editing the roles themselves.  
 
-Applications in Kubeflow often add new `CustomResources` to the Kubernetes cluster that users must also interact with, such as the `Notebook` object from the `notebook-controller`.  To grant users access to these new resources, applications must [implement additional `ClusterRoles`](https://github.com/canonical/kubeflow-roles-operator/blob/afe3e1ea0a6dcb4136a506d4d2b697f9d1589a27/src/manifests/notebook-controller.yaml#L17) that, through the `label: rbac.authorization.kubeflow.org/aggregate-to-kubeflow-*` labels will get aggregated into the roles bound to users.  
+Permissions aggregated into these `ClusterRoles` cover both basic Kubernetes resources, such as defined in [this ClusterRole](https://github.com/canonical/kubeflow-roles-operator/blob/d96c15e4de8bb36e9ec039ae66c12af1084ecd2b/src/manifests/kubeflow-roles.yaml#L74), as well as any access that a custom application requires.  Applications in Kubeflow often add new `CustomResources` to the Kubernetes cluster that users must interact with, such as the `Notebook` object from the `notebook-controller`.  To grant user access to these custom resources, applications must [implement their own `ClusterRoles`](https://github.com/canonical/kubeflow-roles-operator/blob/afe3e1ea0a6dcb4136a506d4d2b697f9d1589a27/src/manifests/notebook-controller.yaml#L17) that, through the `label: rbac.authorization.kubeflow.org/aggregate-to-kubeflow-*` labels, are aggregate into the above described roles.  
 
-Additional information is available in the [upstream manifest repo](https://github.com/kubeflow/manifests/tree/3e08dc102059def5a0b0d04560c7d119959bf506/common/kubeflow-roles)
+To actually grant users the roles described in the aggregation `ClusterRoles`, Kubeflow's Profile Controller binds the above `view` and `edit` `ClusterRoles` to the `ServiceAccounts` of each user during the creation of profiles.  This provides users access to everything defined in any of aggregated `ClusterRoles`.
 
 ### Purposes of this Charm
 
