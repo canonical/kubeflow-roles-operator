@@ -1,27 +1,30 @@
-# manifests/apps/kfserving/upstream/overlays/kubeflow/cluster-role.yaml
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: kubeflow-kfserving-admin
-  labels:
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+# manifests/contrib/kserve/kserve/aggregated-roles.yaml
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-kubeflow-kfserving-admin: "true"
+      rbac.authorization.kubeflow.org/aggregate-to-kubeflow-kserve-admin: "true"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: kserve
+    app.kubernetes.io/name: kserve
+    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+  name: kubeflow-kserve-admin
 rules: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-kfserving-edit
   labels:
+    app: kserve
+    app.kubernetes.io/name: kserve
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-kfserving-admin: "true"
+    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-kserve-admin: "true"
+  name: kubeflow-kserve-edit
 rules:
 - apiGroups:
-  - serving.kubeflow.org
+  - serving.kserve.io
   resources:
   - inferenceservices
   verbs:
@@ -57,12 +60,14 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-kfserving-view
   labels:
+    app: kserve
+    app.kubernetes.io/name: kserve
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view: "true"
+  name: kubeflow-kserve-view
 rules:
 - apiGroups:
-  - serving.kubeflow.org
+  - serving.kserve.io
   resources:
   - inferenceservices
   verbs:

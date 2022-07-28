@@ -1,5 +1,4 @@
 # manifests/apps/pipeline/upstream/base/installs/multi-user/view-edit-cluster-roles.yaml
-
 # NOTE: IMPORTANT
 # We need to separate out actual rules from aggregation rules due to
 # https://github.com/kubernetes/kubernetes/issues/65171
@@ -80,6 +79,23 @@ rules:
   - delete
   - disable
   - enable
+- apiGroups:
+  - kubeflow.org
+  verbs:
+  - '*'
+  resources:
+  - scheduledworkflows
+- apiGroups:
+  - argoproj.io
+  verbs:
+  - '*'
+  resources:
+  - cronworkflows
+  - cronworkflows/finalizers
+  - workflows
+  - workflows/finalizers
+  - workfloweventbindings
+  - workflowtemplates
 
 ---
 
