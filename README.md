@@ -10,7 +10,7 @@ Implemented specifically in this charm are:
 
 ### Kubeflow User Aggregation Roles
 
-As described [here](https://github.com/kubeflow/manifests/tree/3e08dc102059def5a0b0d04560c7d119959bf506/common/kubeflow-roles) upstream, Kubeflow uses aggregation `ClusterRoles` to provide access control to users.  These `ClusterRoles` are:
+Kubeflow uses the concept of [user facing roles](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles) to provide access control to users.  Kubeflow's instantiation of this pattern is described [here](https://github.com/kubeflow/manifests/tree/3e08dc102059def5a0b0d04560c7d119959bf506/common/kubeflow-roles) upstream.  The `ClusterRoles` Kubeflow implements are are:
 
 * rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view
 * rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit
