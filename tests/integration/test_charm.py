@@ -3,6 +3,8 @@
 
 from pathlib import Path
 
+from lightkube import Client
+from lightkube.resources.rbac_authorization_v1 import ClusterRole
 import yaml
 
 
@@ -25,7 +27,10 @@ async def test_build_and_deploy(ops_test):
 async def test_clusterroles_created(ops_test):
     """Ensures ClusterRoles were successfully created."""
 
-    names = [
+    c = Client()
+
+    clusterroles = []
+    clusterrole_names = [
         "kubeflow-admin",
         "kubeflow-edit",
         "kubeflow-view",
@@ -34,21 +39,13 @@ async def test_clusterroles_created(ops_test):
         "kubeflow-kubernetes-view",
     ]
 
-    result = await ops_test.run(
-        "kubectl",
-        "get",
-        "clusterroles",
-        "-oyaml",
-        *names,
-        check=True,
-    )
-    created = yaml.safe_load(result[1])["items"]
-    created = {c["metadata"]["name"]: c["rules"] for c in created}
+    for clusterrole_name in clusterrole_names:
+        clusterroles.append(c.get(ClusterRole, name=clusterrole_name))
+
+    created_rules = {c.metadata.name: c.rules for c in clusterroles}
 
     expected = yaml.safe_load_all(Path("src/manifests/kubeflow-roles.yaml").read_text())
-    expected = {e["metadata"]["name"]: e["rules"] for e in expected}
+    expected_rules = {e["metadata"]["name"]: e["rules"] for e in expected}
 
-    assert list(created.keys()) == list(expected.keys())
+    assert list(created_rules.keys()) == list(expected_rules.keys())
 
-    for name, rules in expected.items():
-        assert rules <= created[name]
