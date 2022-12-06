@@ -48,4 +48,3 @@ async def test_clusterroles_created(ops_test):
     expected_rules = {e["metadata"]["name"]: e["rules"] for e in expected}
 
     assert list(created_rules.keys()) == list(expected_rules.keys())
-
