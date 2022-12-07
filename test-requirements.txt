@@ -1,4 +1,4 @@
 black
 flake8<4.1
-juju<2.10
+juju==3.0.*
 pytest<6.3
