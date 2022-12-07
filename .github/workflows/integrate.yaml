@@ -51,5 +51,8 @@ jobs:
             provider: microk8s
             channel: 1.22/stable
             charmcraft-channel: latest/candidate
+            # Pinned to 2.3.34 due to https://bugs.launchpad.net/juju/+bug/1992833
+            # This should be fixed on release of juju 2.3.36 + libjuju 3.0.3
+            bootstrap-options: --agent-version="2.9.34"
 
       - run: sg microk8s -c "KUBECONFIG=$HOME/.kube/config tox -e integration"
