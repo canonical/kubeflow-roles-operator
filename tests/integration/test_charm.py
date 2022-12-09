@@ -24,10 +24,10 @@ async def test_build_and_deploy(ops_test):
     )
 
 
-async def test_clusterroles_created(ops_test):
+async def test_clusterroles_created():
     """Ensures ClusterRoles were successfully created."""
 
-    c = Client()
+    lightkube_client = Client()
 
     clusterroles = []
     clusterrole_names = [
@@ -40,7 +40,7 @@ async def test_clusterroles_created(ops_test):
     ]
 
     for clusterrole_name in clusterrole_names:
-        clusterroles.append(c.get(ClusterRole, name=clusterrole_name))
+        clusterroles.append(lightkube_client.get(ClusterRole, name=clusterrole_name))
 
     created_rules = {c.metadata.name: c.rules for c in clusterroles}
 
