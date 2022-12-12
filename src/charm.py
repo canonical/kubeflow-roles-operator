@@ -90,10 +90,7 @@ class Operator(CharmBase):
                 client.delete(type(manifest), manifest.metadata.name)
             except ApiError as err:
                 if err.status.code in (401, 403):
-                    print(
-                        "Error deleting object: "
-                        "https://bugs.launchpad.net/bugs/1941655"
-                    )
+                    print("Error deleting object: " "https://bugs.launchpad.net/bugs/1941655")
                 else:
                     raise
 

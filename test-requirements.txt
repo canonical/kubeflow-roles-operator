@@ -1,4 +1,0 @@
-black
-flake8<4.1
-juju==3.0.*
-pytest<6.3
