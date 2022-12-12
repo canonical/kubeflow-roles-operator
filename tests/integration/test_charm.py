@@ -3,9 +3,9 @@
 
 from pathlib import Path
 
+import yaml
 from lightkube import Client
 from lightkube.resources.rbac_authorization_v1 import ClusterRole
-import yaml
 
 
 async def test_build_and_deploy(ops_test):
@@ -18,10 +18,7 @@ async def test_build_and_deploy(ops_test):
         raise_on_blocked=True,
         timeout=60,
     )
-    assert (
-        ops_test.model.applications["kubeflow-roles"].units[0].workload_status
-        == "active"
-    )
+    assert ops_test.model.applications["kubeflow-roles"].units[0].workload_status == "active"
 
 
 async def test_clusterroles_created(ops_test):
