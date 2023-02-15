@@ -2,17 +2,21 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-tensorboard-ui-admin
   labels:
+    app: tensorboards-web-app
+    kustomize.component: tensorboards-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+  name: tensorboards-web-app-kubeflow-tensorboard-ui-admin
 rules: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-tensorboard-ui-edit
   labels:
+    app: tensorboards-web-app
+    kustomize.component: tensorboards-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
+  name: tensorboards-web-app-kubeflow-tensorboard-ui-edit
 rules:
 - apiGroups:
   - tensorboard.kubeflow.org
@@ -28,9 +32,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-tensorboard-ui-view
   labels:
+    app: tensorboards-web-app
+    kustomize.component: tensorboards-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view: "true"
+  name: tensorboards-web-app-kubeflow-tensorboard-ui-view
 rules:
 - apiGroups:
   - tensorboard.kubeflow.org
@@ -48,3 +54,4 @@ rules:
   - get
   - list
   - watch
+

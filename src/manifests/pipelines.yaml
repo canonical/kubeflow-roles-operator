@@ -4,40 +4,13 @@
 # https://github.com/kubernetes/kubernetes/issues/65171
 # TL;DR: We can't have both aggregation and rules in a [Cluster]Role. When that
 # is the case, the rules get ignored.
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
-  name: kubeflow-pipelines-edit
-aggregationRule:
-  clusterRoleSelectors:
-  - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-kubeflow-pipelines-edit: "true"
-rules: []
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-pipelines-edit: "true"
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view: "true"
-  name: kubeflow-pipelines-view
-aggregationRule:
-  clusterRoleSelectors:
-  - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-kubeflow-pipelines-view: "true"
-rules: []
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
+    app.kubernetes.io/component: ml-pipeline
+    app.kubernetes.io/name: kubeflow-pipelines
+    application-crd-id: kubeflow-pipelines
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-pipelines-edit: "true"
   name: aggregate-to-kubeflow-pipelines-edit
 rules:
@@ -83,14 +56,12 @@ rules:
   - enable
 - apiGroups:
   - kubeflow.org
-  verbs:
-  - '*'
   resources:
   - scheduledworkflows
-- apiGroups:
-  - argoproj.io
   verbs:
   - '*'
+- apiGroups:
+  - argoproj.io
   resources:
   - cronworkflows
   - cronworkflows/finalizers
@@ -98,13 +69,16 @@ rules:
   - workflows/finalizers
   - workfloweventbindings
   - workflowtemplates
-
+  verbs:
+  - '*'
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
+    app.kubernetes.io/component: ml-pipeline
+    app.kubernetes.io/name: kubeflow-pipelines
+    application-crd-id: kubeflow-pipelines
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-pipelines-view: "true"
   name: aggregate-to-kubeflow-pipelines-view
 rules:
@@ -140,3 +114,36 @@ rules:
   - visualizations
   verbs:
   - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application-crd-id: kubeflow-pipelines
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+  name: argo-aggregate-to-admin
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - workflows
+  - workflows/finalizers
+  - workfloweventbindings
+  - workfloweventbindings/finalizers
+  - workflowtemplates
+  - workflowtemplates/finalizers
+  - cronworkflows
+  - cronworkflows/finalizers
+  - clusterworkflowtemplates
+  - clusterworkflowtemplates/finalizers
+  - workflowtasksets
+  - workflowtasksets/finalizers
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
