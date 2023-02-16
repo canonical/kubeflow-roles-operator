@@ -2,17 +2,21 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-volume-ui-admin
   labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+  name: volumes-web-app-kubeflow-volume-ui-admin
 rules: []
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-volume-ui-edit
   labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
+  name: volumes-web-app-kubeflow-volume-ui-edit
 rules:
 - apiGroups:
   - ""
@@ -30,9 +34,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-volume-ui-view
   labels:
+    app: volumes-web-app
+    kustomize.component: volumes-web-app
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view: "true"
+  name: volumes-web-app-kubeflow-volume-ui-view
 rules:
 - apiGroups:
   - ""

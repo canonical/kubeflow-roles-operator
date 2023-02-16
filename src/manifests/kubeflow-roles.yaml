@@ -1,6 +1,3 @@
-# manifests/common/kubeflow-roles/base/cluster-roles.yaml
----
-
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
@@ -10,9 +7,7 @@ kind: ClusterRole
 metadata:
   name: kubeflow-admin
 rules: []
-
 ---
-
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
@@ -20,13 +15,11 @@ aggregationRule:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-edit
   labels:
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+  name: kubeflow-edit
 rules: []
-
 ---
-
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
@@ -34,19 +27,17 @@ aggregationRule:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-view
   labels:
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
+  name: kubeflow-view
 rules: []
-
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-kubernetes-admin
   labels:
     rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+  name: kubeflow-kubernetes-admin
 rules:
 - apiGroups:
   - authorization.k8s.io
@@ -68,9 +59,7 @@ rules:
   - patch
   - update
   - watch
-
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -206,9 +195,7 @@ rules:
   - deletecollection
   - patch
   - update
-
 ---
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
