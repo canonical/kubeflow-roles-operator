@@ -29,11 +29,15 @@ idna==3.4
 iniconfig==2.0.0
     # via pytest
 lightkube==0.14.0
-    # via -r ./requirements-unit.in
+    # via
+    #   -r ./requirements-unit.in
+    #   -r ./requirements.in
 lightkube-models==1.27.1.4
     # via lightkube
 ops==2.4.1
-    # via -r ./requirements-unit.in
+    # via
+    #   -r ./requirements-unit.in
+    #   -r ./requirements.in
 packaging==23.1
     # via pytest
 pluggy==1.2.0
