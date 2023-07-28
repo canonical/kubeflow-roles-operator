@@ -17,6 +17,4 @@ coverage
 lightkube
 ops
 pytest
-pytest-mock
-pytest-lazy-fixture
 -r requirements.in
