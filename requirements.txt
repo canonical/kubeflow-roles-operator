@@ -26,7 +26,7 @@ lightkube==0.14.0
     # via -r requirements.in
 lightkube-models==1.27.1.4
     # via lightkube
-ops==2.4.1
+ops==2.5.0
     # via -r requirements.in
 pyyaml==6.0.1
     # via
