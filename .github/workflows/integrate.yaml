@@ -43,6 +43,6 @@ jobs:
             provider: microk8s
             channel: 1.25-strict/stable
             charmcraft-channel: latest/candidate
-            juju-channel: 3.4/stable
+            juju-channel: 3.5/stable
 
       - run: sg snap_microk8s -c "KUBECONFIG=$HOME/.kube/config tox -e integration"
