@@ -37,7 +37,3 @@ To install Kubeflow Roles, run:
     juju deploy kubeflow-roles
 
 For more information, see https://juju.is/docs
-
-## Development
-
-On migration of a Podspec charm to sidecar, you should move the application-specific `ClusterRoles` from this charm to the charm's Auth manifests. Sidecar charms can create a custom `ClusterRole`.
