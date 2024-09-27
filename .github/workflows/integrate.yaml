@@ -23,6 +23,13 @@ jobs:
     - run: pip install tox
     - run: tox -e lint
 
+  terraform-checks:
+    name: Terraform
+    uses: canonical/charmed-kubeflow-workflows/.github/workflows/terraform-checks.yaml@main
+    with:
+      charm-path: .
+      channel: 1.9/stable
+
   unit-test:
     name: Unit
     runs-on: ubuntu-20.04
