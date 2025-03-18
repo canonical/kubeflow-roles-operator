@@ -17,9 +17,13 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v5.3.0
+      with:
+        python-version: 3.8
     - run: pip install tox
     - run: tox -e lint
 
@@ -31,17 +35,26 @@ jobs:
 
   unit-test:
     name: Unit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: 3.8
       - run: pip install tox
       - run: tox -e unit
 
   integration-test:
     name: Integration
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: 3.8
 
       - name: Setup operator environment
         uses: charmed-kubernetes/actions-operator@main
@@ -51,4 +64,4 @@ jobs:
             charmcraft-channel: 3.x/stable
             juju-channel: 3.6/stable
 
-      - run: sg snap_microk8s -c "KUBECONFIG=$HOME/.kube/config tox -e integration"
+      - run: KUBECONFIG=$HOME/.kube/config tox -e integration
