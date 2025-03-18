@@ -6,7 +6,7 @@
 #
 anyio==4.5.2
     # via httpx
-certifi==2024.8.30
+certifi==2025.1.31
     # via
     #   httpcore
     #   httpx
@@ -16,26 +16,24 @@ h11==0.14.0
     # via httpcore
 httpcore==1.0.7
     # via httpx
-httpx==0.27.2
+httpx==0.28.1
     # via lightkube
 idna==3.10
     # via
     #   anyio
     #   httpx
-lightkube==0.15.6
+lightkube==0.17.1
     # via -r requirements.in
-lightkube-models==1.31.1.8
+lightkube-models==1.32.0.8
     # via lightkube
-ops==2.17.1
+ops==2.19.4
     # via -r requirements.in
 pyyaml==6.0.2
     # via
     #   lightkube
     #   ops
 sniffio==1.3.1
-    # via
-    #   anyio
-    #   httpx
+    # via anyio
 typing-extensions==4.12.2
     # via anyio
 websocket-client==1.8.0
