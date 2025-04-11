@@ -34,6 +34,7 @@ async def test_clusterroles_created(ops_test):
         "kubeflow-kubernetes-admin",
         "kubeflow-kubernetes-edit",
         "kubeflow-kubernetes-view",
+        "kubeflow-tokens-edit",
     ]
 
     for clusterrole_name in clusterrole_names:
