@@ -321,3 +321,26 @@ rules:
   - get
   - list
   - watch
+---
+# Charmed Kubeflow specific ClusterRole that allows Kubeflow users
+# to manipulate ServiceAccount tokens
+# Do not remove on upgrade, see canonical/kubeflow-roles-operator#113
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-edit: "true"
+  name: kubeflow-tokens-edit
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
