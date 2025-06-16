@@ -8,8 +8,8 @@ from glob import glob
 from pathlib import Path
 
 from lightkube import ApiError, Client, codecs
+from ops import main
 from ops.charm import CharmBase
-from ops.main import main
 from ops.model import ActiveStatus, BlockedStatus, MaintenanceStatus, WaitingStatus
 
 
