@@ -20,10 +20,14 @@ idna==3.10
     # via
     #   anyio
     #   httpx
+jinja2==3.1.6
+    # via -r requirements.in
 lightkube==0.15.6
     # via -r requirements.in
 lightkube-models==1.31.1.8
     # via lightkube
+markupsafe==3.0.2
+    # via jinja2
 ops==2.17.1
     # via -r requirements.in
 pyyaml==6.0.2
