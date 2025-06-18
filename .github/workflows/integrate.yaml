@@ -19,7 +19,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: pip install tox
     - run: tox -e lint
 
@@ -33,7 +33,7 @@ jobs:
     name: Unit
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: pip install tox
       - run: tox -e unit
 
@@ -41,7 +41,7 @@ jobs:
     name: Integration
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup operator environment
         uses: charmed-kubernetes/actions-operator@main
