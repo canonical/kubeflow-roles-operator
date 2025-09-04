@@ -48,7 +48,7 @@ optional = true
 [tool.poetry.group.charm.dependencies]
 jinja2 = "^3.1.6"
 lightkube = "^0.15.6"
-ops = "^2.17.1"
+ops = "^3.0.0"
 
 [tool.poetry.group.fmt]
 optional = true
@@ -76,7 +76,7 @@ optional = true
 [tool.poetry.group.unit.dependencies]
 coverage = "^7.6.1"
 lightkube = "^0.15.6"
-ops = "^2.17.1"
+ops = "^3.0.0"
 pytest = "^8.3.4"
 
 [tool.poetry.group.integration]
