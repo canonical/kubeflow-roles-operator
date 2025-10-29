@@ -1,6 +1,7 @@
 resource "juju_application" "kubeflow_roles" {
   charm {
     name     = "kubeflow-roles"
+    base     = var.base
     channel  = var.channel
     revision = var.revision
   }
