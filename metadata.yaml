@@ -6,3 +6,4 @@ display-name: Kubeflow Roles
 description: RBAC aggregation roles for Kubeflow user accounts
 docs: https://discourse.charmhub.io/t/8233
 summary: RBAC aggregation roles for Kubeflow user accounts
+charm-user: non-root
