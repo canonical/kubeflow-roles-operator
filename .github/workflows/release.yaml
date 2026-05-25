@@ -1,4 +1,4 @@
-name: Release
+name: Release to Charmhub
 
 on:
   push:
@@ -7,20 +7,20 @@ on:
       - track/**
 
 jobs:
-  ci:
-    name: CI
+  ci-tests:
     uses: ./.github/workflows/ci.yaml
     secrets: inherit
-    permissions:
-      contents: write
 
   release:
     name: Release charm to Charmhub
     needs:
-      - ci
-    uses: canonical/data-platform-workflows/.github/workflows/release_charm_edge.yaml@v38.0.0
+      - ci-tests
+    uses: canonical/data-platform-workflows/.github/workflows/release_charm_edge.yaml@v49.0.1
     with:
-      artifact-prefix: ${{ needs.ci.outputs.artifact-prefix }}
-      track: latest
+      track: ${{ needs.ci-tests.outputs.track }}
+      artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     secrets:
       charmhub-token: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
+    permissions:
+      actions: read
+      contents: write  # Needed to create git tags
