@@ -6,8 +6,12 @@ import pytest
 
 @pytest.mark.abort_on_fail
 @pytest.mark.skip(reason="Not published to store yet")
-async def test_build_and_deploy(ops_test):
-    local_charm = await ops_test.build_charm(".")
+async def test_build_and_deploy(ops_test, request):
+    local_charm = (
+        await ops_test.build_charm(".")
+        if not (local_charm := request.config.getoption("--charm-path"))
+        else local_charm
+    )
     await ops_test.model.deploy("ch:kubeflow-roles", trust=True)
     await ops_test.model.wait_for_idle(status="active")
 
