@@ -26,11 +26,15 @@ def lightkube_client() -> Client:
     return client
 
 
-async def test_build_and_deploy(ops_test: OpsTest):
+async def test_build_and_deploy(ops_test: OpsTest, request):
     """Build, deploy and ensure application is in ActiveStatus."""
 
-    built_charm = await ops_test.build_charm(".")
-    await ops_test.model.deploy(built_charm, trust=True)
+    entity_url = (
+        await ops_test.build_charm(".")
+        if not (entity_url := request.config.getoption("--charm-path"))
+        else entity_url
+    )
+    await ops_test.model.deploy(entity_url, trust=True)
     await ops_test.model.wait_for_idle(
         status="active",
         raise_on_blocked=True,
